@@ -17,9 +17,7 @@ function dichotomy(a = DEFAULTS.a, b = DEFAULTS.b, ba, eps = DEFAULTS.eps, n = 0
 
     ba = Math.abs(b - a);
     let c = (a + b)/2;
-    let fa = func(a);
-    let fc = func(c);
-    let fac = fa * fc;
+    let fac = func(a) * func(c);
 
     if (fac > 0) a = c;
     if (fac < 0) b = c;
