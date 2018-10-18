@@ -3,6 +3,10 @@ let func = function(x){
     return Math.sin(x) * 0.5; 
 }
 
+let funcDerivative = function(x){
+	return Math.cos(x) * 0.5;
+}
+
 //default values of dichotomy function
 const DEFAULTS = {
     a: -1,          //start
@@ -11,7 +15,7 @@ const DEFAULTS = {
     nMax: 50        //max number of recursive calls
 }
 
-function dichotomy(a = DEFAULTS.a, b = DEFAULTS.b, ba, eps = DEFAULTS.eps, n = 0, nMax = DEFAULTS.nMax){
+function Dichotomy(a = DEFAULTS.a, b = DEFAULTS.b, ba, eps = DEFAULTS.eps, n = 0, nMax = DEFAULTS.nMax){
 
     n++;
 
@@ -25,11 +29,11 @@ function dichotomy(a = DEFAULTS.a, b = DEFAULTS.b, ba, eps = DEFAULTS.eps, n = 0
     if (ba < eps || n > nMax){ 
         return {min: a, max: b, avg: Math.round((a+b)/2 / eps) * eps};
     } else {
-        return dichotomy(a,b,ba,eps,n);
+        return Dichotomy(a,b,ba,eps,n);
     }
 }
 
-function secant(a = DEFAULTS.a, b = DEFAULTS.b, eps = DEFAULTS.eps, d = 0, n = 0, nMax = DEFAULTS.nMax){
+function Secant(a = DEFAULTS.a, b = DEFAULTS.b, eps = DEFAULTS.eps, d = 0, n = 0, nMax = DEFAULTS.nMax){
 	
 	n++;
 
@@ -37,7 +41,17 @@ function secant(a = DEFAULTS.a, b = DEFAULTS.b, eps = DEFAULTS.eps, d = 0, n = 0
 	b2 = b - (a - b)*func(b)/(func(a) - func(b));
 	
 	d = Math.abs(b - b2);
-	if(d > eps || n > nMax) return secant(a,b2,eps,d);
+	if(d > eps || n > nMax) return Secant(a,b2,eps,d,n);
 	else return Math.round((b2 + b)/2 / eps) * eps;
 	
+}
+
+function Newton(a = DEFAULTS.a, eps = DEFAULTS.eps, d = 0, n = 0, nMax = DEFAULTS.nMax){
+	
+	n++;
+	
+	let a2 = a - func(a)/funcDerivative(a);
+	d = Math.abs(a - a2);
+	if(d > eps || n > nMax) return Newton(a2,eps,d,n);
+	else return Math.round(a2 / eps) * eps;
 }
